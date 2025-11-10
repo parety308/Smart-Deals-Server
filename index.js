@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 3000;
 
 //middleware
-const uri = "mongodb+srv://smartDBUser:7qIJARDZ9BAEbUaP@cluster0.hvbrfkh.mongodb.net/?appName=Cluster0";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.hvbrfkh.mongodb.net/?appName=Cluster0`;
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -33,10 +34,10 @@ async function run() {
             res.send(result);
         });
 
-        app.get('/products/:id',async(req,res)=>{
-            const id=req.params.id;
-            const query={_id :new ObjectId(id)};
-            const result= await productCollection.findOne(query);
+        app.get('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await productCollection.findOne(query);
             res.send(result);
         })
 
